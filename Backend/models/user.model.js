@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 
 const userSchema = new mongoose.Schema({
   fullname: {
-    fastname: {
+    firstname: {
     type: String,
     required: true,
     minlength:[3, "Full name must be at least 3 characters long"],
