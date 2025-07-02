@@ -1,6 +1,8 @@
 import express from 'express'
 import cors from 'cors';
 import dotenv from 'dotenv';
+import connectDB from './db/db.js';
+import userRoutes from './routes/user.routes.js';
 dotenv.config();
 
 const app = express();
@@ -12,6 +14,13 @@ app.get('/', (req, res) => {
   res.send('Hello World!');
 });
 
+app.use('/api/user',userRoutes)
+
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
+  connectDB().then(() => {
+    console.log('Database connected successfully');
+  }).catch((error) => {
+    console.error('Database connection failed:', error);
+  });
 });
