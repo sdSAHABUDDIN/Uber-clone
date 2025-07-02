@@ -71,3 +71,37 @@ The request body must be a JSON object containing the following fields:
 - `200 OK`: Login successful, returns a JWT token and user data.
 - `400 Bad Request`: Validation errors in the request body.
 - `401 Unauthorized`: Invalid email or password.
+
+---
+
+## Get User Profile Endpoint
+
+### /users/profile
+
+`GET /users/profile`
+
+#### Description
+
+This endpoint returns the profile information of the authenticated user. The request must include a valid authentication token (usually as a cookie or in the Authorization header).
+
+#### Status Codes
+
+- `200 OK`: Returns the user's profile data.
+- `401 Unauthorized`: Missing or invalid authentication token.
+- `404 Not Found`: User not found.
+
+---
+
+## User Logout Endpoint
+
+### /users/logout
+
+`GET /users/logout`
+
+#### Description
+
+This endpoint logs out the authenticated user by clearing the authentication token and blacklisting it.
+
+#### Status Codes
+
+- `200 OK`: User logged out successfully.

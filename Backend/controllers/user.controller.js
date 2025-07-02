@@ -1,6 +1,7 @@
 import User from "../models/user.model.js";
 import { validationResult } from "express-validator";
 import { createUser } from "../services/user.service.js";
+import BlacklistToken from "../models/blacklistToken.model.js";
 
 export const registerUser = async (req, res) => {
   // Validate request body
@@ -49,6 +50,30 @@ export const loginUser=async (req, res) => {
     return res.status(401).json({ message: "Invalid email or password" });
   }
   const token = user.generateAuthToken();
+  res.cookie("token", token, {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production", // Use secure cookies in production
+    sameSite: "strict", // Prevent CSRF attacks
+  });
   res.status(200).json({
     token, user});
+}
+
+export const getUserProfile = async (req, res) => {
+  try {
+    const user = await User.findById(req.user.id).select("-password");
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.status(200).json(user);
+  } catch (error) {
+    console.error("Error fetching user profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+}
+
+export const logoutUser = async (req, res) => {
+  res.clearCookie("token");
+  await BlacklistToken.create({ token: req.cookies.token });
+  res.status(200).json({ message: "Logged out successfully" });
 }
