@@ -105,3 +105,58 @@ This endpoint logs out the authenticated user by clearing the authentication tok
 #### Status Codes
 
 - `200 OK`: User logged out successfully.
+
+---
+
+## Captain Registration Endpoint
+
+### /captains/register
+
+`POST /captains/register`
+
+#### Description
+
+This endpoint allows a new captain to register by providing their personal and vehicle details. It validates the input data, ensures the email and vehicle plate are unique, and creates a new captain in the database.
+
+#### Required Data
+
+The request body must be a JSON object containing the following fields:
+
+- `fullname`: An object containing:
+  - `firstname`: A string (minimum 3 characters).
+  - `lastname`: A string (minimum 2 characters).
+- `email`: A string (must be a valid email address).
+- `password`: A string (minimum 6 characters).
+- `phone`: A string (must be a valid phone number).
+- `vehicle`: An object containing:
+  - `color`: A string (3-20 characters).
+  - `plate`: A string (1-13 uppercase letters/numbers, unique).
+  - `capacity`: An integer (minimum 1).
+  - `vehicleType`: A string, one of: `car`, `bike`, `van`.
+  - `model`: A string (minimum 3 characters).
+
+##### Example Request Body
+
+```json
+{
+  "fullname": {
+    "firstname": "Jane",
+    "lastname": "Smith"
+  },
+  "email": "jane.smith@example.com",
+  "password": "strongpassword",
+  "phone": "+1234567890",
+  "vehicle": {
+    "color": "Red",
+    "plate": "AB01XX2349",
+    "capacity": 4,
+    "vehicleType": "car",
+    "model": "Toyota Corolla"
+  }
+}
+```
+
+#### Status Codes
+
+- `201 Created`: Captain registration successful.
+- `400 Bad Request`: Validation errors, email or vehicle plate already in use.

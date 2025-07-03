@@ -5,7 +5,7 @@ import connectDB from './db/db.js';
 import cookieParser from 'cookie-parser';
 import userRoutes from './routes/user.routes.js';
 dotenv.config();
-
+import captainRoutes from './routes/captain.routes.js';
 const app = express();
 const PORT = process.env.PORT || 3000;
 app.use(cors());
@@ -16,6 +16,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/user',userRoutes)
+app.use('/api/captain', captainRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
