@@ -148,7 +148,7 @@ The request body must be a JSON object containing the following fields:
   "phone": "+1234567890",
   "vehicle": {
     "color": "Red",
-    "plate": "AB01XX2349",
+    "plate": "ABC1234",
     "capacity": 4,
     "vehicleType": "car",
     "model": "Toyota Corolla"
@@ -159,4 +159,74 @@ The request body must be a JSON object containing the following fields:
 #### Status Codes
 
 - `201 Created`: Captain registration successful.
-- `400 Bad Request`: Validation errors, email or vehicle plate already in use.
+- `400 Bad Request`: Validation errors, email or vehicle plate already exists.
+
+---
+
+## Captain Login Endpoint
+
+### /captains/login
+
+`POST /captains/login`
+
+#### Description
+
+This endpoint allows a captain to log in using their email and password. If the credentials are valid, a JWT token and captain data are returned.
+
+#### Required Data
+
+The request body must be a JSON object containing:
+
+- `email`: A string (must be a valid email address).
+- `password`: A string (minimum 6 characters).
+
+##### Example Request Body
+
+```json
+{
+  "email": "jane.smith@example.com",
+  "password": "strongpassword"
+}
+```
+
+#### Status Codes
+
+- `200 OK`: Login successful, returns a JWT token and captain data.
+- `400 Bad Request`: Validation errors in the request body.
+- `401 Unauthorized`: Invalid email or password.
+
+---
+
+## Get Captain Profile Endpoint
+
+### /captains/profile
+
+`GET /captains/profile`
+
+#### Description
+
+This endpoint returns the profile information of the authenticated captain. The request must include a valid authentication token.
+
+#### Status Codes
+
+- `200 OK`: Returns the captain's profile data.
+- `401 Unauthorized`: Missing or invalid authentication token.
+
+---
+
+## Captain Logout Endpoint
+
+### /captains/logout
+
+`GET /captains/logout`
+
+#### Description
+
+This endpoint logs out the authenticated captain by clearing the authentication token and blacklisting it.
+
+#### Status Codes
+
+- `200 OK`: Captain logged out successfully.
+
+---
+

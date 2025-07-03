@@ -1,7 +1,8 @@
 import express from 'express';
 
-import { rgisterCaptain } from '../controllers/captain.controller.js';
+import { rgisterCaptain ,loginCaptain,logoutCaptain,getCaptainProfile} from '../controllers/captain.controller.js';
 import { body } from 'express-validator';
+import { authCaptain } from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
@@ -18,4 +19,14 @@ router.post("/register",[
   body('vehicle.model').isLength({ min: 3 }).withMessage('Vehicle model must be at least 3 characters long'),
   
 ], rgisterCaptain);
+
+router.post("/login", [
+  body('email').isEmail().withMessage('Please enter a valid email address'),
+  body('password').isLength({ min: 6 }).withMessage('Password must be at least 6 characters long')  
+
+],loginCaptain);
+
+router.get("/profile", authCaptain,getCaptainProfile);
+router.get("/logout",logoutCaptain);
+
 export default router;
